@@ -138,12 +138,5 @@ class MazeParser:
         # {self.output_file} perfect: {self.perfect}")
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 a_maze_ing.py <config_file>")
-        sys.exit(1)
-    data = MazeParser.parser(sys.argv[1])
-    print(f"Width: {data.width}, Height: {data.height}")
-    print(f"Entry: {data.entry}, Exit: {data.exit}")
-    print(f"Perfect: {data.perfect}")
-    print(f"Output: {data.output_file}")
+#if __name__ == "__main__":
+#    MazeParser.parser(sys.argv[1])
