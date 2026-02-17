@@ -1,18 +1,29 @@
 import sys
+from typing import Optional
+from maze_parser import MazeParser
+from maze_grid import MazeGrid
 
 
-class AMazeIng:
-    """main program orchestrator class"""
-    def __init__(self, config_file: str):
-        config = MazeParser.parser(config_file)
-
-def main() -> None:
-    if not len(sys.argv) == 2:
-        print("Error: No arguments provided.\nUsage: python3 a-maze-ing "
-              "<config.txt>")
-        sys.exit()
-    AMazeIng(sys.argv[1])
+@dataclass
+class Cell:
+    x: int
+    y: int
+    north: bool = True
+    east: bool = True
+    south: bool = True
+    west: bool = True
+    visited: bool = False
 
 
-if __name__ == "__main__":
-    main()
+class MazeGrid:
+    def __init__(self, config: MazeParser) -> None:
+        self.width: int = config.width
+        self.height: int = config.height
+        self.entry: tuple[int, int] = config.entry
+        self.exit: tuple[int, int] = config.exit
+        self.seed: Optional[int] = config.seed
+
+        self.grid: list[list[Cell]] = [
+            [Cell(x=x, y=y) for x in range(self.width)]
+             for y in range(self.height)]
+        ]
