@@ -6,12 +6,11 @@
 #    By: rvaz-da- <rvaz-da-@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/01 18:24:00 by rvaz-da-          #+#    #+#              #
-#    Updated: 2026/02/11 11:51:02 by rvaz-da-         ###   ########.fr        #
+#    Updated: 2026/02/17 18:27:30 by rvaz-da-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = a_maze_ing.py
-PARSING = maze_parser.py
+NAME = src/a_maze_ing.py
 PY = python3
 PIP = pip3
 VENV = .venv
@@ -28,15 +27,16 @@ $(VENV)/bin/activate: requirements.txt
 	$(PY) -m venv $(VENV)
 	$(VENV_PIP) install --upgrade pip
 	$(VENV_PIP) install -r requirements.txt
-	$(VENV_PIP) install ./packages/mlx_CLXV-2.2.tar
+	tar -xf ./packages/mlx_CLXV-2.2.tar
+	$(VENV_PIP) install ./mlx_CLXV/python
 	@echo "Virtual environment setup complete!"
 
 
 run: $(VENV)/bin/activate
-	$(PYTHON) $(SRC_DIR)/$(PARSING) $(CONFIG_FILE)
+	$(PYTHON) $(NAME) $(CONFIG_FILE)
 
 debug: $(VENV)/bin/activate
-	$(PYTHON) -m pdb $(SRC_DIR)/$(PARSING) $(CONFIG_FILE)
+	$(PYTHON) -m pdb $(NAME) $(CONFIG_FILE)
 
 clean:
 	rm -rf __pycache__/
@@ -44,6 +44,7 @@ clean:
 	rm -rf $(SRC_DIR)/mazegen/__pycache__/
 	rm -rf .mypy_cache/
 	rm -rf $(VENV)
+	rm -rf mlx_CLXV
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	@echo "Cleanup complete!"
