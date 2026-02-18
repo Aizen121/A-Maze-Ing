@@ -138,5 +138,5 @@ class MazeParser:
         # {self.output_file} perfect: {self.perfect}")
 
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #    MazeParser.parser(sys.argv[1])
