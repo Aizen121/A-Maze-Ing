@@ -70,7 +70,7 @@ class MazeGenerator:
         random.seed(self.seed)
 
     def get_cell(self, x: int, y: int) -> object:
-        return self.grid[x][y]
+        return self.grid[y][x]
 
     def _place_pattern_42(self) -> None:
         if (self.width < self.Pattern_width
@@ -96,12 +96,46 @@ class MazeGenerator:
         for px, py, in self.pattern_cells:
             self.grid[py][px].visited = True
 
-    def print_grid(self):
-        """"""
-        for row in self.grid:
-            for cell in row:
-                if (cell.x, cell.y) in self.pattern_cells:
-                    print("#", end="")
+    def remove_wall(self, cell_a, cell_b) -> None:
+        dx: int = cell_b.x - cell_a.x
+        dy: int = cell_b.y - cell_a.y
+
+        if dx == 1 and dy == 0:
+            cell_a.east = False
+            cell_b.west = False
+        elif dx == -1 and dy == 0:
+            cell_a.west = False
+            cell_b.east = False
+        elif dx == 0 and dy == 1:
+            cell_a.south = False
+            cell_b.north = False
+        elif dx == 0 and dy == -1:
+            cell_a.north = False
+            cell_b.south = False
+
+    def print_grid(self) -> None:
+        for y in range(self.height):
+            top: str = ""
+            mid: str = ""
+            for x in range(self.width):
+                cell = self.grid[y][x]
+                top += "+" + ("---" if cell.north else "   ")
+                mid += ("|" if cell.west else " ")
+                if (x, y) == self.entry:
+                    mid += " E "
+                elif (x, y) == self.exit_pos:
+                    mid += " X "
+                elif (cell.x, cell.y) in self.pattern_cells:
+                    mid += " # "
                 else:
-                    print(".", end="")
-            print()
+                    mid += "   "
+            top += "+"
+            mid += "|" if self.grid[y][self.width - 1].east else " "
+            print(top)
+            print(mid)
+        bottom: str = ""
+        for x in range(self.width):
+            cell = self.grid[self.height - 1][x]
+            bottom += "+" + ("---" if cell.south else "   ")
+        bottom += "+"
+        print(bottom)

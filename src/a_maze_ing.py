@@ -1,6 +1,7 @@
 import sys
 from mazegen.maze_parser import MazeParser
 from mazegen.generator import MazeGenerator
+from mazegen.backtracking import backtracking
 
 
 def main() -> None:
@@ -10,6 +11,7 @@ def main() -> None:
         sys.exit(1)
     config = MazeParser.parser(sys.argv[1])
     maze = MazeGenerator(config)
+    backtracking(maze)
     maze.print_grid()
 
 
