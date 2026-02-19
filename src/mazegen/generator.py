@@ -12,13 +12,6 @@ class MazeGenerator:
         "W": (-1, 0),
     }
 
-    Opposite: dict[str, str] = {
-        "N": "S",
-        "S": "N",
-        "E": "W",
-        "W": "E",
-    }
-
     Digit_4: list[tuple[int, int]] = [
         (0, 0), (0, 1), (0, 2),
         (1, 2),
@@ -113,7 +106,17 @@ class MazeGenerator:
             cell_a.north = False
             cell_b.south = False
 
-    def print_grid(self) -> None:
+    def print_grid(self, path: list = None) -> None:
+        path_cells: set = set()
+        if path:
+            cx, cy = self.entry
+            path_cells.add((cx, cy))
+            for direction in path:
+                dx, dy = self.Directions[direction]
+                cx += dx
+                cy += dy
+                path_cells.add((cx, cy))
+
         for y in range(self.height):
             top: str = ""
             mid: str = ""
@@ -127,6 +130,8 @@ class MazeGenerator:
                     mid += " X "
                 elif (cell.x, cell.y) in self.pattern_cells:
                     mid += " # "
+                elif (x, y) in path_cells:
+                    mid += " ` "
                 else:
                     mid += "   "
             top += "+"

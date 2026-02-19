@@ -2,6 +2,7 @@ import sys
 from mazegen.maze_parser import MazeParser
 from mazegen.generator import MazeGenerator
 from mazegen.backtracking import backtracking
+from mazegen.bfs import bfs
 
 
 def main() -> None:
@@ -12,7 +13,9 @@ def main() -> None:
     config = MazeParser.parser(sys.argv[1])
     maze = MazeGenerator(config)
     backtracking(maze)
-    maze.print_grid()
+    solver = bfs(maze)
+    print(f"Shortest path: {solver.get_path_string()}")
+    maze.print_grid(path=solver.path)
 
 
 if __name__ == "__main__":
